@@ -1,0 +1,30 @@
+.splash-background {
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  animation: mymove 2s forwards, 2s mymove2 5s forwards;
+}
+
+@keyframes mymove {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: #74b9ff;
+  }
+}
+
+@keyframes mymove2 {
+  from {
+    background-color: #74b9ff;
+  }
+  to {
+    background-color: white;
+  }
+}
+
+.Text {
+  color: white;
+  justify-content: center;
+  padding-top: 45vh;
+}
