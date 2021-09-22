@@ -1,0 +1,12 @@
+.create {
+  display: flex;
+  position: absolute;
+  right: 20px;
+  top: 40px;
+  transition: 500ms transform;
+  transform: scale(1.2);
+}
+
+.create:hover {
+  transform: scale(1.4);
+}

@@ -1,0 +1,7 @@
+.card-component {
+  transition: 500ms transform;
+}
+
+.card-component:hover {
+  transform: translateY(-10px);
+}

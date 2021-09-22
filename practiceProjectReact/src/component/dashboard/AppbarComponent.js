@@ -4,32 +4,52 @@ import {
   Slide,
   useScrollTrigger,
   AppBar,
-  Container,
-  Fade,
   Typography,
+  IconButton,
 } from "@material-ui/core";
+import { AddRounded } from "@material-ui/icons";
+import "./AppbarComponentStyle.css";
+import { useHistory } from "react-router";
 
 function AppbarComponent() {
   const trigger = useScrollTrigger();
+  const history = useHistory();
+
   useEffect(() => {
     console.log(trigger);
   }, [trigger]);
+
+  const moveToCreatePage = () => {
+    history.push("/create");
+  };
+
   return (
     <div>
       <Slide direction="down" in={!trigger}>
         <AppBar style={{ background: "white" }} elevation={0}>
-          <Container>
-            <Typography
-              variant={"h2"}
-              style={{ color: "#707070", padding: "20px 5px" }}
+          <Typography
+            variant={"h2"}
+            style={{
+              color: "#707070",
+              padding: "30px 50px",
+              fontWeight: "bold",
+            }}
+          >
+            Dashboard
+          </Typography>
+          <div className="create">
+            <IconButton
+              size="xxlarge"
+              style={{ color: "white", backgroundColor: "#74b9ff" }}
+              onClick={() => {
+                moveToCreatePage();
+              }}
             >
-              Dashboard
-            </Typography>
-          </Container>
+              <AddRounded></AddRounded>
+            </IconButton>
+          </div>
         </AppBar>
       </Slide>
-      <br />
-      <br />
     </div>
   );
 }

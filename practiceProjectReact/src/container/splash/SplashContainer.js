@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
-import SplashComponent from "../component/splash/SplashComponent";
+import SplashComponent from "../../component/splash/SplashComponent";
 
 function SplashContainer() {
   const history = useHistory();

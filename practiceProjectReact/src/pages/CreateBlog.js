@@ -1,9 +1,10 @@
 import React from "react";
+import CreateBlogContainer from "../container/createBlogs/CreateBlogContainer";
 
 function CreateBlog() {
   return (
     <div>
-      <h1>Create Blogs Page</h1>
+      <CreateBlogContainer />
     </div>
   );
 }
