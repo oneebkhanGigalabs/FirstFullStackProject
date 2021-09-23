@@ -39,6 +39,7 @@ function TopPictureBarComponent() {
       position="static"
       style={{
         minHeight: "400px",
+        overflow: "hidden",
       }}
     >
       <Toolbar

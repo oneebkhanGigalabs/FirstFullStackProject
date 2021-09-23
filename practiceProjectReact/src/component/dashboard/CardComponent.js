@@ -9,6 +9,7 @@ import {
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router";
+import { useEffect } from "react";
 import "./CardComponentStyle.css";
 
 const useStyles = makeStyles({
@@ -41,9 +42,11 @@ function CardComponent({
   content: content,
   imageURL: imageURL,
   id: id,
+  p: p,
 }) {
   const classes = useStyles();
   const history = useHistory();
+  useEffect(() => {}, []);
 
   const routeChange = (objectid) => {
     let path = `/` + objectid;
@@ -77,6 +80,7 @@ function CardComponent({
           </FiCardContent>
         </FiCardActionArea>
       </FiCard>
+      <div></div>
     </div>
   );
 }

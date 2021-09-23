@@ -1,8 +1,15 @@
 import CardContainer from "../../container/dashboard/CardContainer";
 import { Grid } from "@material-ui/core";
 import React from "react";
+import { connect } from "react-redux";
+import * as actionCreators from "../../redux/actions/index";
+import { useState, useEffect } from "react";
 
-function DashboardContentComponent() {
+function DashboardContentComponent({ ...props }) {
+  useEffect(() => {
+    const p = props.GetBlogs();
+    console.log(props.blogs);
+  }, []);
   return (
     <Grid
       container
@@ -22,11 +29,7 @@ function DashboardContentComponent() {
           xl={2}
           key={index}
           style={{ marginBottom: 50 }}
-          justify="center"
-          justifyContent="center"
           align="center"
-          alignContent="center"
-          direction="row"
         >
           <CardContainer></CardContainer>
         </Grid>
@@ -35,4 +38,11 @@ function DashboardContentComponent() {
   );
 }
 
-export default DashboardContentComponent;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  actionCreators
+)(DashboardContentComponent);

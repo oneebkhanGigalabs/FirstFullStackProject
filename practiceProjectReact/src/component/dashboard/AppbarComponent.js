@@ -39,7 +39,7 @@ function AppbarComponent() {
           </Typography>
           <div className="create">
             <IconButton
-              size="xxlarge"
+              size="medium"
               style={{ color: "white", backgroundColor: "#74b9ff" }}
               onClick={() => {
                 moveToCreatePage();

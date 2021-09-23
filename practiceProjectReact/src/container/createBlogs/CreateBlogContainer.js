@@ -1,10 +1,10 @@
 import React from "react";
-import TextFieldComponent from "../../component/createBlog/TextFieldComponent";
+import CreateBlogsComponent from "../../component/createBlog/CreateBlogsComponent";
 
 function CreateBlogContainer() {
   return (
     <div>
-      <TextFieldComponent></TextFieldComponent>
+      <CreateBlogsComponent></CreateBlogsComponent>
     </div>
   );
 }
