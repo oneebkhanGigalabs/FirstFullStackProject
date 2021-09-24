@@ -1,13 +1,12 @@
 import React from "react";
-import { Fade } from "@material-ui/core";
 import AppbarContainer from "../container/dashboard/AppbarContainer";
-import DashboardContentComponent from "../component/dashboard/DashboardContentComponent";
+import BottomContentContainer from "../container/dashboard/BottomContentContainer";
 import FooterComponent from "../component/dashboard/FooterComponent";
 
 function Dashboard() {
   return (
     <div>
-      <AppbarContainer></AppbarContainer>
+      <AppbarContainer />
       <br />
       <br />
       <br />
@@ -15,8 +14,8 @@ function Dashboard() {
       <br />
       <br />
       <br />
-      <DashboardContentComponent></DashboardContentComponent>
-      <FooterComponent></FooterComponent>
+      <BottomContentContainer />
+      <FooterComponent />
     </div>
   );
 }

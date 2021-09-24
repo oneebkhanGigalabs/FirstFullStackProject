@@ -9,7 +9,6 @@ import {
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router";
-import { useEffect } from "react";
 import "./CardComponentStyle.css";
 
 const useStyles = makeStyles({
@@ -37,16 +36,9 @@ const useStyles = makeStyles({
   },
 });
 
-function CardComponent({
-  title: title,
-  content: content,
-  imageURL: imageURL,
-  id: id,
-  p: p,
-}) {
+function CardComponent({ imageURL: imageURL, blogs: blogs, index: index }) {
   const classes = useStyles();
   const history = useHistory();
-  useEffect(() => {}, []);
 
   const routeChange = (objectid) => {
     let path = `/` + objectid;
@@ -57,30 +49,28 @@ function CardComponent({
       <FiCard className={classes.card}>
         <FiCardActionArea
           onClick={() => {
-            routeChange(id);
+            routeChange(blogs[index]._id);
           }}
         >
           <FiCardMedia
             media="picture"
-            alt={title}
-            image={imageURL}
-            title={title}
+            component="img"
+            alt={blogs[index].title}
+            image={blogs[index].image}
+            title={blogs[index].title}
           />
           <FiCardContent className={classes.fiCardContent}>
             <Typography gutterBottom variant="h5" component="h2">
-              {title}
+              {blogs[index].title}
             </Typography>
             <Typography
               variant="body2"
               className={classes.fiCardContentTextSecondary}
               component="p"
-            >
-              {content}
-            </Typography>
+            ></Typography>
           </FiCardContent>
         </FiCardActionArea>
       </FiCard>
-      <div></div>
     </div>
   );
 }

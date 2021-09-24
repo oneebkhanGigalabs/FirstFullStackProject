@@ -1,8 +1,9 @@
 import CardContainer from "../../container/dashboard/CardContainer";
 import { Grid } from "@material-ui/core";
 import React from "react";
+import Skeleton from "@material-ui/lab/Skeleton";
 
-function DashboardContentComponent({ blogs: blogs }) {
+function SkeletonLoadingBottomContent() {
   return (
     <Grid
       container
@@ -11,7 +12,7 @@ function DashboardContentComponent({ blogs: blogs }) {
       direction="row"
       columns={{ xs: 4, sm: 8, md: 12 }}
     >
-      {Array.from(Array(blogs.length)).map((_, index) => (
+      {Array.from(Array(12)).map((_, index) => (
         <Grid
           item
           xs={12}
@@ -23,11 +24,13 @@ function DashboardContentComponent({ blogs: blogs }) {
           style={{ marginBottom: 50 }}
           align="center"
         >
-          <CardContainer blogs={blogs} index={index}></CardContainer>
+          <Skeleton variant="rect">
+            <CardContainer blogs={[{ title: "" }]} index={0}></CardContainer>
+          </Skeleton>
         </Grid>
       ))}
     </Grid>
   );
 }
 
-export default DashboardContentComponent;
+export default SkeletonLoadingBottomContent;

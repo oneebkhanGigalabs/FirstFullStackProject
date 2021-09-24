@@ -1,14 +1,12 @@
 import React from "react";
 import CardComponent from "../../component/dashboard/CardComponent";
 
-function CardContainer() {
+function CardContainer({ blogs: blogs, index: index }) {
   return (
     <CardComponent
-      title="Lights"
       imageURL="https://image.shutterstock.com/image-photo/business-woman-drawing-global-structure-260nw-1006041130.jpg"
-      content=""
-      id="6"
-      p=""
+      blogs={blogs}
+      index={index}
     ></CardComponent>
   );
 }

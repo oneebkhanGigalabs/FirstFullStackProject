@@ -16,7 +16,7 @@ import { Delete, KeyboardArrowUpRounded } from "@material-ui/icons";
 import ConfirmationDialog from "../ConfirmationDialog";
 import { useState } from "react";
 
-function TopPictureBarComponent() {
+function TopPictureBarComponent({ ...props }) {
   //variable decides whether the delete dialog should open or not
   const [open, setopen] = useState(false);
   const trigger = useScrollTrigger({ threshold: 100 });
@@ -50,11 +50,7 @@ function TopPictureBarComponent() {
       >
         {/* the background image*/}
         <div className="appbar-image-div">
-          <img
-            className="appbar-image"
-            src="https://image.shutterstock.com/image-photo/business-woman-drawing-global-structure-260nw-1006041130.jpg"
-            alt="yesh"
-          />
+          <img className="appbar-image" src={props.image} alt={props.title} />
         </div>
         {/* the main blogs text link*/}
         <div className="logo" id="back-to-top-anchor">
@@ -77,7 +73,7 @@ function TopPictureBarComponent() {
               color: "white",
             }}
           >
-            Lights
+            {props.title}
           </Typography>
         </div>
         {/* the edit button*/}

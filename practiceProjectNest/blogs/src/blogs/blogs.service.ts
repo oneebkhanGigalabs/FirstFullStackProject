@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { response } from 'express';
 import { Model } from 'mongoose';
 import { blogsDto } from './dto/blogs.dto';
 import { Blogs } from './interfaces/blogs.interfaces';
@@ -13,7 +14,14 @@ export class BlogsService {
   }
 
   async getBlog(id: string) {
-    return await this.model.findById(id).exec();
+    return await this.model
+      .findById(id)
+      .exec()
+      .catch((e) => {
+        throw new BadRequestException(
+          "Blog with id '" + id + "' does not exist",
+        );
+      });
   }
 
   async createBlogs(blogsDto: blogsDto) {
@@ -21,10 +29,24 @@ export class BlogsService {
   }
 
   async updateBlog(id: string, updateBlogsDto: blogsDto) {
-    return await this.model.findByIdAndUpdate(id, updateBlogsDto).exec();
+    this.model
+      .findByIdAndUpdate(id, updateBlogsDto)
+      .exec()
+      .catch((e) => {
+        throw new BadRequestException(
+          "Blog with id '" + id + "' does not exist",
+        );
+      });
   }
 
   async deleteBlog(id: string) {
-    return await this.model.findByIdAndDelete(id).exec();
+    return await this.model
+      .findByIdAndDelete(id)
+      .exec()
+      .catch((e) => {
+        throw new BadRequestException(
+          "Blog with id '" + id + "' does not exist",
+        );
+      });
   }
 }

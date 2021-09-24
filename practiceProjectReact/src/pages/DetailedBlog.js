@@ -1,15 +1,10 @@
 import React from "react";
-import TopAppBarContainer from "../container/blogDetails/TopPictureBarContainer";
-import BlogDetailsSpaceComponent from "../component/blogDetails/BlogDetailsSpaceComponent";
-import BlogsBottomContentContainer from "../container/blogDetails/BlogsBottomContentContainer";
+import BlogDetailsContainer from "../container/blogDetails/BlogDetailsContainer";
 
 function DetailedBlog() {
   return (
     <div>
-      <TopAppBarContainer></TopAppBarContainer>
-      <br />
-      <br />
-      <BlogsBottomContentContainer></BlogsBottomContentContainer>
+      <BlogDetailsContainer></BlogDetailsContainer>
       <ul>
         <li>1</li>
         <li>1</li>

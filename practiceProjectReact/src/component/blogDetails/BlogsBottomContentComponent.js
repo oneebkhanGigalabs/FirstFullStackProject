@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Typography } from "@material-ui/core";
 
-function BlogsBottomContentComponent({ content: content }) {
+function BlogsBottomContentComponent({ ...props }) {
   return (
     <Container>
       <Typography variant="h5" style={{ color: "#707070" }}>
-        {content}
+        {props.props.description} - {props.props.author}
       </Typography>
     </Container>
   );
