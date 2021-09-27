@@ -1,7 +1,7 @@
 .create {
   display: flex;
   position: absolute;
-  right: 20px;
+  right: 40px;
   top: 40px;
   transition: 500ms transform;
   transform: scale(1.2);
