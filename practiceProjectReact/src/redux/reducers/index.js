@@ -2,6 +2,9 @@ import {
   FETCH_BLOGS_REQUEST,
   FETCH_BLOGS_SUCCESS,
   FETCH_BLOGS_FAILURE,
+  CREATE_BLOG,
+  UPDATE_BLOG,
+  DELETE_BLOG,
 } from "../constants/blogContstants";
 
 let defaultState = {
@@ -28,6 +31,11 @@ const mainReducer = (state = defaultState, action) => {
         loading: false,
         blogs: [],
         error: action.payload,
+      };
+    case CREATE_BLOG:
+      return {
+        ...state,
+        loading: true,
       };
     default:
       return state;

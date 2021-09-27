@@ -1,17 +1,26 @@
 import React from "react";
 import TextFieldComponent from "./TextFieldComponent";
 import { Typography, Fab, TextField, Button } from "@material-ui/core";
-import { useState } from "react";
 import { AddToPhotos } from "@material-ui/icons";
 import $ from "jquery";
 
-function CreateBlogsComponent() {
-  const [titleValue, settitleValue] = useState("");
-  const [content, setcontent] = useState("");
-  const [author, setauthor] = useState("");
-  const [picture, setpicture] = useState(null);
-  const [pictureName, setpictureName] = useState("Select an image");
-
+function CreateBlogsComponent({
+  base64Image: base64Image,
+  pictureName: pictureName,
+  picture: picture,
+  author: author,
+  description: description,
+  title: title,
+  getBase64: getBase64,
+  onImageSelect: onImageSelect,
+  setdescription: setdescription,
+  setpicture: setpicture,
+  setpictureName: setpictureName,
+  settitle: settitle,
+  setbase64Image: setbase64Image,
+  setauthor: setauthor,
+  onSubmitForm: onSubmitForm,
+}) {
   return (
     <div style={{ padding: "20px 30px" }}>
       <div>
@@ -23,12 +32,12 @@ function CreateBlogsComponent() {
       <br />
       {/* the blog title text field */}
       <TextFieldComponent
-        value={titleValue}
+        value={title}
         title="Blog Title"
         multiline="false"
         maxWidth="500px"
         onchange={(e) => {
-          settitleValue(e);
+          settitle(e);
         }}
         type="text"
       ></TextFieldComponent>
@@ -49,6 +58,7 @@ function CreateBlogsComponent() {
       <br />
       <br />
       {/* image picker here */}
+
       <TextField
         value=""
         label={pictureName}
@@ -60,6 +70,9 @@ function CreateBlogsComponent() {
         InputProps={{
           disableUnderline: true,
         }}
+        onClick={(e) => {
+          $("#file-selector").trigger("click");
+        }}
         onChange={(e) => {
           setpictureName(e);
         }}
@@ -67,9 +80,10 @@ function CreateBlogsComponent() {
       <Fab
         style={{
           backgroundColor: "#74B9FF",
+          zIndex: "2",
         }}
         onTouchStart={() => {
-          $("#file-selector").trigger();
+          $("#file-selector").trigger("click");
         }}
       >
         <AddToPhotos
@@ -86,11 +100,7 @@ function CreateBlogsComponent() {
             width: "100px",
           }}
           onChange={(e) => {
-            if (e.target.files[0]) {
-              setpicture(e.target.files[0]);
-              setpictureName(e.target.files[0].name);
-              console.log(e.target.files[0].name + " selected");
-            }
+            onImageSelect(e);
           }}
         />
       </Fab>
@@ -98,11 +108,11 @@ function CreateBlogsComponent() {
       <br />
       {/* the blog title text field */}
       <TextFieldComponent
-        value={content}
-        title="Blog Content"
+        value={description}
+        title="Blog description"
         multiline="true"
         onchange={(e) => {
-          setcontent(e);
+          setdescription(e);
         }}
         type="text"
       ></TextFieldComponent>
@@ -115,6 +125,10 @@ function CreateBlogsComponent() {
           color: "white",
           width: "120px",
           height: "50px",
+          zIndex: "2",
+        }}
+        onClick={() => {
+          onSubmitForm();
         }}
       >
         Submit

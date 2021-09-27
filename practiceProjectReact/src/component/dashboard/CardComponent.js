@@ -36,7 +36,7 @@ const useStyles = makeStyles({
   },
 });
 
-function CardComponent({ imageURL: imageURL, blogs: blogs, index: index }) {
+function CardComponent({ blogs: blogs }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -49,19 +49,19 @@ function CardComponent({ imageURL: imageURL, blogs: blogs, index: index }) {
       <FiCard className={classes.card}>
         <FiCardActionArea
           onClick={() => {
-            routeChange(blogs[index]._id);
+            routeChange(blogs && blogs._id);
           }}
         >
           <FiCardMedia
             media="picture"
             component="img"
-            alt={blogs[index].title}
-            image={blogs[index].image}
-            title={blogs[index].title}
+            alt={blogs && blogs.title}
+            image={blogs && blogs.image}
+            title={blogs && blogs.title}
           />
           <FiCardContent className={classes.fiCardContent}>
             <Typography gutterBottom variant="h5" component="h2">
-              {blogs[index].title}
+              {blogs && blogs.title}
             </Typography>
             <Typography
               variant="body2"
