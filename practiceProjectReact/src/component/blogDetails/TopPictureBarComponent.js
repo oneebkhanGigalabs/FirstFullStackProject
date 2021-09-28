@@ -15,6 +15,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import { Delete, KeyboardArrowUpRounded } from "@material-ui/icons";
 import ConfirmationDialog from "../ConfirmationDialog";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function TopPictureBarComponent({ ...props }) {
   //variable decides whether the delete dialog should open or not
@@ -78,22 +79,24 @@ function TopPictureBarComponent({ ...props }) {
         </div>
         {/* the edit button*/}
         <div className="edit-button">
-          <IconButton
-            size={"medium"}
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <Avatar
-              style={{
-                backgroundColor: "white",
-                WebkitTapHighlightColor: "#707070",
-              }}
+          <Link to={"/" + props.props._id + "/update"}>
+            <IconButton
+              size={"medium"}
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
             >
-              <EditIcon style={{ color: "#707070" }} />
-            </Avatar>
-          </IconButton>
+              <Avatar
+                style={{
+                  backgroundColor: "white",
+                  WebkitTapHighlightColor: "#707070",
+                }}
+              >
+                <EditIcon style={{ color: "#707070" }} />
+              </Avatar>
+            </IconButton>
+          </Link>
         </div>
         {/* the delete button*/}
         <div className="delete-button">

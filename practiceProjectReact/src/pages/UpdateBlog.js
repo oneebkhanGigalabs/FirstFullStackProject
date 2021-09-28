@@ -1,9 +1,10 @@
 import React from "react";
+import UpdateBlogContainer from "../container/updateBlog/UpdateBlogContainer";
 
 function UpdateBlog() {
   return (
     <div>
-      <h1>Update blogs page</h1>
+      <UpdateBlogContainer></UpdateBlogContainer>
     </div>
   );
 }
