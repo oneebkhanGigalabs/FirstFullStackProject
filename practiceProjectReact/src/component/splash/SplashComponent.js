@@ -1,10 +1,10 @@
 import "./SplashComponentStyle.css";
 import { Fade, Typography } from "@material-ui/core";
 
-function SplashComponent(checked) {
+function SplashComponent({ checked: checked }) {
   return (
     <div className="splash-background">
-      <Fade in={checked} timeout={(800, 800)}>
+      <Fade in={checked} timeout={(1000, 1000)}>
         <Typography variant={"h1"} align={"center"} className="Text">
           Blogs
         </Typography>

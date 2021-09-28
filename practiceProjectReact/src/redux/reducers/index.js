@@ -11,6 +11,7 @@ let defaultState = {
   loading: false,
   blogs: [],
   error: "",
+  msg: "",
 };
 
 const mainReducer = (state = defaultState, action) => {
@@ -37,6 +38,17 @@ const mainReducer = (state = defaultState, action) => {
         ...state,
         loading: true,
       };
+    case UPDATE_BLOG:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_BLOG:
+      return {
+        ...state,
+        loading: true,
+      };
+
     default:
       return state;
   }

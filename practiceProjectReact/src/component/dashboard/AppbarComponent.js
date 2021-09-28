@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { mergeClasses } from "@material-ui/styles";
+import React from "react";
 import {
   Slide,
   useScrollTrigger,
@@ -14,10 +13,6 @@ import { useHistory } from "react-router";
 function AppbarComponent() {
   const trigger = useScrollTrigger();
   const history = useHistory();
-
-  useEffect(() => {
-    console.log(trigger);
-  }, [trigger]);
 
   const moveToCreatePage = () => {
     history.push("/create");

@@ -2,9 +2,20 @@ import React, { useState } from "react";
 import CreateBlogsComponent from "../../component/createBlog/CreateBlogsComponent";
 import { useHistory } from "react-router";
 import { Backdrop, CircularProgress } from "@material-ui/core";
-import { createBlogRequest } from "../../redux/actions";
 import { connect } from "react-redux";
 import { createBlog } from "../../redux/actions";
+import AlertDialogComponent from "../../component/AlertDialogComponent";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "text.primary",
+  boxShadow: 24,
+  p: 4,
+};
 
 function CreateBlogContainer({ ...props }) {
   const [title, settitle] = useState("");
@@ -13,6 +24,7 @@ function CreateBlogContainer({ ...props }) {
   const [picture, setpicture] = useState(null);
   const [pictureName, setpictureName] = useState("Select an image");
   const [base64Image, setbase64Image] = useState(null);
+  const [openModal, setopenModal] = useState(false);
   const history = useHistory();
 
   function getBase64(file) {
@@ -37,27 +49,24 @@ function CreateBlogContainer({ ...props }) {
     }
   }
 
-  async function postFormData() {
-    props.createBlog({
-      title: title,
-      description: description,
-      author: author,
-      image: base64Image,
-    });
-  }
-
   function onSubmitForm() {
     if (base64Image && title && description && author) {
-      postFormData();
-
-      if (props.blogs.loading === false) {
-        history.push("/");
-      }
+      props
+        .createBlog({
+          title: title,
+          description: description,
+          author: author,
+          image: base64Image,
+        })
+        .then(() => {
+          history.push("/");
+        });
     } else {
-      console.log("enter all the data");
+      setopenModal(true);
     }
   }
-  //console.log(props);
+  // console.log(props.blogs.blogs.status);
+  // console.log(props);
   return (
     <div>
       <CreateBlogsComponent
@@ -101,6 +110,15 @@ function CreateBlogContainer({ ...props }) {
       >
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AlertDialogComponent
+        title="Fill out all the details"
+        content="Please fill out all the details before submitting the form"
+        onClick={() => {
+          setopenModal(false);
+        }}
+        openModal={openModal}
+        buttonText="Ok"
+      ></AlertDialogComponent>
     </div>
   );
 }

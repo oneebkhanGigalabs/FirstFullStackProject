@@ -6,10 +6,8 @@ import SkeletonLoadingBottomContent from "../../component/dashboard/SkeletonLoad
 import "./bottomContent.css";
 
 function BottomContentContainer({ ...props }) {
-  console.log(props);
   useEffect(() => {
     props.fetchAllBlogs();
-    console.log(props);
   }, []);
 
   return !props ? (

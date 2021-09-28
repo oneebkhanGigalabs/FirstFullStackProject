@@ -7,7 +7,6 @@ import { connect } from "react-redux";
 function BlogDetailsContainer({ ...props }) {
   useEffect(() => {
     props.fetchBlog(getId());
-    console.log(props);
   }, []);
 
   return (
@@ -15,6 +14,7 @@ function BlogDetailsContainer({ ...props }) {
       <TopAppBarContainer
         image={props.blogs.blogs.image}
         title={props.blogs.blogs.title}
+        id={props.blogs.blogs._id}
         props={props.blogs.blogs}
       ></TopAppBarContainer>
       <br />

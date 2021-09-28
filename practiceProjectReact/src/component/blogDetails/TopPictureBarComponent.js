@@ -126,6 +126,7 @@ function TopPictureBarComponent({ ...props }) {
               "Delete the current blog? This action can not be undone."
             }
             onSubmit={() => {
+              props.deleteFunction();
               setopen(false);
             }}
             onClose={() => {

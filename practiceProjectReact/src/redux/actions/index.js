@@ -46,31 +46,72 @@ export const createBlog = ({
   author: author,
   image: image,
 }) => {
-  return (dispatch) => {
-    console.log("test1");
+  return async (dispatch) => {
     dispatch(createBlogRequest());
-    console.log("test2");
-    axios
-      .post(API_LINK, {
+    try {
+      const res = await axios.post(API_LINK, {
         title: title,
         description: description,
         author: author,
         image: image,
-      })
-      .then((res) => {
-        console.log("test3");
-        dispatch(fetchBlogsSuccess(res));
-        console.log("test4");
-      })
-      .catch((error) => {
-        fetchBlogsFailure(error.message);
       });
+      dispatch(fetchBlogsSuccess(res));
+    } catch (error) {
+      fetchBlogsFailure(error.message);
+    }
+  };
+};
+
+export const updateBlog = ({
+  title: title,
+  description: description,
+  author: author,
+  image: image,
+  id: id,
+}) => {
+  return async (dispatch) => {
+    dispatch(updateBlogRequest());
+    try {
+      const res = await axios.put(API_LINK + id, {
+        title: title,
+        description: description,
+        author: author,
+        image: image,
+      });
+      dispatch(fetchBlogsSuccess(res));
+    } catch (error) {
+      fetchBlogsFailure(error.message);
+    }
+  };
+};
+
+export const deleteBlog = (id) => {
+  return async (dispatch) => {
+    dispatch(deleteBlogRequest());
+    try {
+      const res = await axios.delete(API_LINK + id);
+      dispatch(fetchBlogsSuccess(res));
+    } catch (error) {
+      dispatch(fetchBlogsFailure(error.message));
+    }
   };
 };
 
 export const createBlogRequest = () => {
   return {
     type: CREATE_BLOG,
+  };
+};
+
+export const deleteBlogRequest = () => {
+  return {
+    type: DELETE_BLOG,
+  };
+};
+
+export const updateBlogRequest = () => {
+  return {
+    type: UPDATE_BLOG,
   };
 };
 

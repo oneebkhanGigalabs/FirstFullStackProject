@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import SplashComponent from "../../component/splash/SplashComponent";
 
 function SplashContainer() {
+  const [checked, setchecked] = useState(false);
   const history = useHistory();
   useEffect(() => {
     setTimeout(() => {
       setchecked(true);
-    }, 1500);
+    }, 1200);
 
     setTimeout(() => {
       setchecked(false);
@@ -19,7 +20,6 @@ function SplashContainer() {
     }, 7000);
   }, []);
 
-  const [checked, setchecked] = useState(false);
   return <SplashComponent checked={checked} />;
 }
 
