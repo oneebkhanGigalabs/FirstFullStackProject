@@ -3,13 +3,21 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BlogsModule } from './blogs/blogs.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     BlogsModule,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
     MongooseModule.forRoot(
-      'mongodb+srv://user1234:user1234@cluster0.okbhp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+      'mongodb+srv://' +
+        process.env.DB_USER +
+        ':' +
+        process.env.DB_PASSWORD +
+        '@cluster0.okbhp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     ),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

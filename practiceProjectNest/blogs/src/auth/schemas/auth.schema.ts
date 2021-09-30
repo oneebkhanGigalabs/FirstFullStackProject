@@ -1,24 +1,27 @@
 import * as mongoose from 'mongoose';
-import { defaultImage } from './defaltImage';
+import { defaultImage } from '../../blogs/schemas/defaltImage';
 
-export const BlogsSchema = new mongoose.Schema(
+export const AuthSchema = new mongoose.Schema(
   {
-    title: {
+    username: {
       type: String,
       required: true,
     },
-    description: {
+    email: {
       type: String,
       required: true,
     },
-    author: {
+    token: {
       type: String,
       required: true,
     },
     image: {
       type: String,
-      required: true,
       default: defaultImage,
+    },
+    hashPassword: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true },

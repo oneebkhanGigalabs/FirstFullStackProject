@@ -25,7 +25,7 @@ export class BlogsService {
   }
 
   async createBlogs(blogsDto: blogsDto) {
-    return await new this.model({ ...blogsDto, createdAt: new Date() }).save();
+    return await new this.model({ ...blogsDto }).save();
   }
 
   async updateBlog(id: string, updateBlogsDto: blogsDto) {
