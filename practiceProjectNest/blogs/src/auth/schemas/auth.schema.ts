@@ -17,12 +17,20 @@ export const AuthSchema = new mongoose.Schema(
     },
     image: {
       type: String,
+      required: false,
       default: defaultImage,
     },
     hashPassword: {
       type: String,
       required: true,
     },
+    favoriteBlogs: [
+      {
+        type: String,
+        required: false,
+        default: 'tesht',
+      },
+    ],
   },
   { timestamps: true },
 );

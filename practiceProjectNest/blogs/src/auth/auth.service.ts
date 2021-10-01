@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -26,18 +27,43 @@ export class AuthService {
   // }
 
   async signinLocal(dto: signInDto) {
-    const user = await this.model.findOne((user) => user.email === dto.email);
-    if (user && bcrypt.compare(dto.password, user.hashPassword)) {
-      return {
-        token: this.jwtService.signAsync({
-          email: user.email,
-          name: user.username,
-          type: 'user',
-        }),
-        status: 200,
-      };
+    if (!dto.email || !dto.password) {
+      throw new NotAcceptableException('Email and/or password not provided');
     }
-    throw new NotFoundException('Email or password incorrect');
+    let tokenValue = {};
+    const user = await this.model
+      .findOne()
+      .where('email')
+      .equals(dto.email)
+      .exec()
+      .catch((error) => {
+        return error;
+      })
+      .then(async (user) => {
+        await bcrypt
+          .compare(dto.password, user.hashPassword)
+          .then(async (hash) => {
+            if (user && hash) {
+              await this.jwtService
+                .signAsync({
+                  email: user.email,
+                  name: user.username,
+                  type: 'user',
+                })
+                .then((token) => {
+                  console.log(token);
+                  tokenValue = token;
+                  //return { user };
+                })
+                .catch((er) => {
+                  return er;
+                });
+            } else {
+              throw new NotFoundException('Email or password incorrect');
+            }
+          });
+      });
+    return tokenValue;
   }
 
   async signupLocal(dto: userDto) {
@@ -63,30 +89,40 @@ export class AuthService {
         });
         console.log(hash);
         console.log(token);
-        return await new this.model({
-          username: dto.username,
-          email: dto.email,
-          hashPassword: hash,
-          token: token,
-          image: dto.image,
-        }).save();
+        if (dto.image) {
+          return await new this.model({
+            username: dto.username,
+            email: dto.email,
+            hashPassword: hash,
+            token: token,
+            image: dto.image,
+          }).save();
+        } else {
+          return await new this.model({
+            username: dto.username,
+            email: dto.email,
+            hashPassword: hash,
+            token: token,
+          }).save();
+        }
       });
   }
 
-  async validateUser(email: string, password: string) {
+  async getUser() {}
+
+  async validate(email: string) {
     const user = await this.model
       .findOne()
       .where('email')
       .equals(email)
       .exec()
       .catch((error) => {
-        console.log();
+        console.log(error);
         return { error: error };
       })
       .then((userInfo) => {
-        console.log(userInfo);
         return userInfo;
       });
-    return user;
+    return new NotFoundException('No user with this email');
   }
 }

@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { BlogsModule } from './blogs/blogs.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { JwtStrategy } from './auth/strategy/jwt.strategy';
+import { AuthService } from './auth/auth.service';
 
 @Module({
   imports: [

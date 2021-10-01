@@ -4,4 +4,5 @@ export interface Auth extends Document {
   token: string;
   hashPassword: string;
   image: string;
+  favoriteBlogs: [blogId: string];
 }

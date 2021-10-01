@@ -38,4 +38,9 @@ export class BlogsController {
   async delete(@Param('id') id: string) {
     return await this.service.deleteBlog(id);
   }
+
+  @Put(':id/favorite')
+  async favoriteBlog(@Param('id') id: string, @Body() email: string) {
+    return await this.service.favoriteBlog(id, email);
+  }
 }

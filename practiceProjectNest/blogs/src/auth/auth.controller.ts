@@ -15,9 +15,4 @@ export class AuthController {
   async signupLocal(@Body() userDto: userDto) {
     return await this.authService.signupLocal(userDto);
   }
-
-  @Post('test')
-  test(@Body() signinDto: signInDto) {
-    return this.authService.validateUser(signinDto.email, signinDto.password);
-  }
 }
