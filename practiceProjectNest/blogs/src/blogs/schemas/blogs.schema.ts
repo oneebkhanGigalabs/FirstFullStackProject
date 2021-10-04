@@ -1,6 +1,26 @@
 import * as mongoose from 'mongoose';
 import { defaultImage } from './defaltImage';
 
+export const CommentSchema = new mongoose.Schema(
+  {
+    author: {
+      type: String,
+      required: true,
+    },
+    comment: {
+      type: String,
+      required: true,
+    },
+    //comments: [this],
+    level: {
+      type: Number,
+    },
+  },
+  { timestamps: true },
+);
+
+CommentSchema.add({ comments: [CommentSchema] });
+
 export const BlogsSchema = new mongoose.Schema(
   {
     title: {
@@ -20,6 +40,7 @@ export const BlogsSchema = new mongoose.Schema(
       required: true,
       default: defaultImage,
     },
+    comment: [CommentSchema],
   },
   { timestamps: true },
 );
