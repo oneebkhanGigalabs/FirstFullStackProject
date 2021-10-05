@@ -3,4 +3,5 @@ export class blogsDto {
   description: string;
   author: string;
   image: string;
+  token: string;
 }

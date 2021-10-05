@@ -1,7 +1,9 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { response } from 'express';
@@ -38,23 +40,56 @@ export class BlogsService {
   }
 
   async updateBlog(id: string, updateBlogsDto: blogsDto) {
-    const blogData = { ...blogsDto };
-    this.model
-      .findByIdAndUpdate(id, blogData)
+    await this.model
+      .findById(id)
       .exec()
       .catch((e) => {
-        throw new BadRequestException(
-          "Blog with id '" + id + "' does not exist",
-        );
+        throw new BadRequestException(e);
+      })
+      .then(async (blog) => {
+        if (!blog) {
+          throw new BadRequestException(
+            "Blog with id '" + id + "' does not exist",
+          );
+        }
+        if (blog.token != updateBlogsDto.token) {
+          throw new UnauthorizedException(
+            "You can't edit this blog because you did not create it",
+          );
+        }
+        return await this.model
+          .findByIdAndUpdate(id, updateBlogsDto)
+          .exec()
+          .catch((err) => {
+            return err;
+          });
       });
   }
 
-  async deleteBlog(id: string) {
-    return await this.model
-      .findByIdAndDelete(id)
+  async deleteBlog(id: string, token: string) {
+    await this.model
+      .findById(id)
       .exec()
       .catch((e) => {
-        throw new NotFoundException("Blog with id '" + id + "' does not exist");
+        throw new BadRequestException(e);
+      })
+      .then(async (blog) => {
+        if (!blog) {
+          throw new BadRequestException(
+            "Blog with id '" + id + "' does not exist",
+          );
+        }
+        if (blog.token != token) {
+          throw new UnauthorizedException(
+            "You can't delete this blog because you did not create it",
+          );
+        }
+        return await this.model
+          .findByIdAndDelete(id)
+          .exec()
+          .catch((err) => {
+            return err;
+          });
       });
   }
 
@@ -147,6 +182,48 @@ export class BlogsService {
         );
       });
   }
+
+  async deleteComment(id: string, blogID: string, token: string) {
+    await this.model
+      .findById(id)
+      .exec()
+      .catch((err) => {
+        return err;
+      })
+      .then((blog) => {
+        traverseAndDeleteElement(blog.comment, blogID, token).then(
+          async (res) => {
+            if (res) {
+              await this.model.findByIdAndUpdate(id, { comment: res });
+            }
+          },
+        );
+      });
+  }
+
+  async updateComment(
+    id: string,
+    commentsDto: commentsDto,
+    blogID: string,
+    token: string,
+  ) {
+    await this.model
+      .findById(id)
+      .exec()
+      .catch((err) => {
+        return err;
+      })
+      .then((blog) => {
+        traverseAndUpdateElement(blog.comment, blogID, commentsDto, token).then(
+          async (res) => {
+            //console.log(res);
+            if (res) {
+              await this.model.findByIdAndUpdate(id, { comment: res });
+            }
+          },
+        );
+      });
+  }
 }
 
 // function to traverse through the nested comments
@@ -164,7 +241,6 @@ async function traverseCommentsReply(
 ) {
   for (var index = 0; index < objList.length; index++) {
     if (objList[index]._id.toString() === id) {
-      console.log(objList[index]);
       objList[index].comments.push({
         ...commentsDto,
         level: objList[index].level + 1,
@@ -178,5 +254,71 @@ async function traverseCommentsReply(
   return objList;
 }
 
-// 2. will traverse through the array and return the element with id
-//    will be used in delete and update
+// 2. will traverse through the array and delete
+//    the element with the matching id
+//    if element is not found or token does not match user
+//    an exception will be thrown
+async function traverseAndDeleteElement(
+  objList: any[],
+  id: string,
+  token: string,
+) {
+  let c = '';
+  for (var index = 0; index < objList.length; index++) {
+    if (objList[index]._id.toString() === id) {
+      if (objList[index].token != token) {
+        c = 'token';
+        break;
+      }
+      c = 'found';
+      objList.splice(index, 1);
+      break;
+    }
+    if (objList[index].comments.length > 0) {
+      traverseAndDeleteElement(objList[index].comments, id, token);
+    }
+  }
+  switch (c) {
+    case 'token':
+      throw new ForbiddenException('Token does not match');
+    case 'found':
+      return objList;
+    default:
+      throw new NotFoundException('No blog with id found');
+  }
+}
+
+// 3. will traverse through the array and update
+//    the element with the matching id
+//    if element is not found or token does not match user
+//    an exception will be thrown
+async function traverseAndUpdateElement(
+  objList: any[],
+  id: string,
+  commentsDto: any,
+  token: string,
+) {
+  let c = '';
+  for (var index = 0; index < objList.length; index++) {
+    if (objList[index]._id.toString() === id) {
+      if (objList[index].token != token) {
+        c = 'token';
+        break;
+      }
+      c = 'found';
+      objList[index].comment = commentsDto.comment;
+      break;
+    }
+    if (objList[index].comments.length > 0) {
+      traverseAndUpdateElement(objList[index].comments, id, commentsDto, token);
+    }
+  }
+  switch (c) {
+    case 'token':
+      throw new ForbiddenException('Token does not match');
+    case 'found':
+      return objList;
+    default:
+      throw new NotFoundException('No blog with id found');
+  }
+}

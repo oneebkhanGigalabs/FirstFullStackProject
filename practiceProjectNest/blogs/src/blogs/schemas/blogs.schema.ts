@@ -15,6 +15,10 @@ export const CommentSchema = new mongoose.Schema(
     level: {
       type: Number,
     },
+    token: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true },
 );
@@ -32,6 +36,10 @@ export const BlogsSchema = new mongoose.Schema(
       required: true,
     },
     author: {
+      type: String,
+      required: true,
+    },
+    token: {
       type: String,
       required: true,
     },

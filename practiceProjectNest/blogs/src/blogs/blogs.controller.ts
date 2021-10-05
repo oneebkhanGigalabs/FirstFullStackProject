@@ -40,9 +40,9 @@ export class BlogsController {
   }
 
   //delete the blog with the id
-  @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.service.deleteBlog(id);
+  @Delete(':id/:token')
+  async delete(@Param('id') id: string, @Param('token') token: string) {
+    return await this.service.deleteBlog(id, token);
   }
 
   // ********** part 2 ********** //
@@ -78,5 +78,26 @@ export class BlogsController {
     @Body() commentsDto: commentsDto,
   ) {
     return await this.service.replyToComment(id, commentsDto, blogId);
+  }
+
+  //update a comment
+  @Put(':id/comments/:blogId/:token')
+  async updateComment(
+    @Param('id') id: string,
+    @Param('blogId') blogId: string,
+    @Body() commentsDto: commentsDto,
+    @Param('token') token: string,
+  ) {
+    return await this.service.updateComment(id, commentsDto, blogId, token);
+  }
+
+  //delete a comment
+  @Delete(':id/comments/:blogId/:token')
+  async deleteComment(
+    @Param('id') id: string,
+    @Param('blogId') blogId: string,
+    @Param('token') token: string,
+  ) {
+    return await this.service.deleteComment(id, blogId, token);
   }
 }
