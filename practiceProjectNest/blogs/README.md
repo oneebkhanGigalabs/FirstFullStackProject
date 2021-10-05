@@ -50,7 +50,7 @@ The following is a backend for the 'Blogs' application. The backend is written i
 | Create blog             | `localhost:<portNumber>/api/blogs`                             | **POST**     |
 | Get blog with id        | `localhost:<portNumber>/api/blogs/:id`                         | **GET**      |
 | Update blog with id     | `localhost:<portNumber>/api/blogs/:id`                         | **PUT**      |
-| Delete blog with id     | `localhost:<portNumber>/api/blogs/:id/:token'                  | **DELETE**   |
+| Delete blog with id     | `localhost:<portNumber>/api/blogs/:id/:token`                  | **DELETE**   |
 | -                       | -                                                              | -            |
 | Favorite a blog with id | `localhost:<portNumber>/api/blogs/:id/favorite`                | **PUT**      |
 | -                       | -                                                              | -            |
@@ -63,4 +63,4 @@ The following is a backend for the 'Blogs' application. The backend is written i
 | Signup                  | `localhost:<portNumber>/api/auth/singup`                       | **POST**     |
 | Login                   | `localhost:<portNumber>/api/auth/login`                        | **POST**     |
 
-> **Note**: This application is a work in progress right now
+> **Note**: This application is a work in progress right now. To use the application provide your own database link. Make a .env file in the base directory and supply the follwing SECRET_KEY, DB_USER, DB_PASSWORD
