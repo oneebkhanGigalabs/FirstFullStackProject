@@ -17,7 +17,7 @@ export const getUser = (token) => {
   return (dispatch) => {
     dispatch(getUserRequest());
     axios
-      .get(API_LINK + "getUser" + token)
+      .get(API_LINK + "getUser/" + token)
       .then((response) => {
         const userInfo = response.data;
         dispatch(getUserSuccess(userInfo));
@@ -59,20 +59,6 @@ export const signup = (email, password, username, base64Image) => {
       })
       .catch((err) => {
         dispatch(loginFailure(err.message));
-      });
-  };
-};
-
-export const getUser = (token) => {
-  return (dispatch) => {
-    dispatch(getUserRequest());
-    axios
-      .get(API_LINK + "getUser/" + localStorage["token"])
-      .then((userInfo) => {
-        dispatch(getUserSuccess(userInfo.data));
-      })
-      .catch((err) => {
-        dispatch(getUserFailure(err.message));
       });
   };
 };

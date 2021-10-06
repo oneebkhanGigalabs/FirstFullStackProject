@@ -12,15 +12,25 @@ import {
 } from "@material-ui/core";
 import "./TopPictureBarStyle.css";
 import EditIcon from "@material-ui/icons/Edit";
-import { Delete, KeyboardArrowUpRounded } from "@material-ui/icons";
+import { Delete, KeyboardArrowUpRounded, Favorite } from "@material-ui/icons";
 import ConfirmationDialog from "../ConfirmationDialog";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 function TopPictureBarComponent({ ...props }) {
   //variable decides whether the delete dialog should open or not
   const [open, setopen] = useState(false);
+  const [favorite, setfavorite] = useState(false);
   const trigger = useScrollTrigger({ threshold: 100 });
+
+  useEffect(() => {
+    if (props.user.favoriteBlogs.includes(props.props._id)) {
+      setfavorite(true);
+    } else {
+      setfavorite(false);
+    }
+  }, []);
 
   //function to move to the top
   const handleClick = (event) => {
@@ -78,7 +88,10 @@ function TopPictureBarComponent({ ...props }) {
           </Typography>
         </div>
         {/* the edit button*/}
-        <div className="edit-button">
+        <div
+          className="edit-button"
+          style={props.user.token == props.blogtoken ? {} : { display: "none" }}
+        >
           <Link to={"/" + props.props._id + "/update"}>
             <IconButton
               size={"medium"}
@@ -99,7 +112,10 @@ function TopPictureBarComponent({ ...props }) {
           </Link>
         </div>
         {/* the delete button*/}
-        <div className="delete-button">
+        <div
+          className="delete-button"
+          style={props.user.token == props.blogtoken ? {} : { display: "none" }}
+        >
           <IconButton
             size={"medium"}
             edge="start"
@@ -117,6 +133,30 @@ function TopPictureBarComponent({ ...props }) {
               }}
             >
               <Delete style={{ color: "#707070" }} />
+            </Avatar>
+          </IconButton>
+        </div>
+
+        <div className="favorite-button">
+          <IconButton
+            size={"medium"}
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            sx={{ mr: 2 }}
+            onClick={() => {
+              setfavorite(!favorite);
+            }}
+          >
+            <Avatar
+              style={{
+                backgroundColor: "white",
+                WebkitTapHighlightColor: "#707070",
+              }}
+            >
+              <Favorite
+                style={favorite ? { color: "red" } : { color: "grey" }}
+              />
             </Avatar>
           </IconButton>
         </div>

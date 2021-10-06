@@ -8,7 +8,6 @@ function CreateBlogsComponent({
   base64Image: base64Image,
   pictureName: pictureName,
   picture: picture,
-  author: author,
   description: description,
   title: title,
   getBase64: getBase64,
@@ -18,7 +17,6 @@ function CreateBlogsComponent({
   setpictureName: setpictureName,
   settitle: settitle,
   setbase64Image: setbase64Image,
-  setauthor: setauthor,
   onSubmitForm: onSubmitForm,
 }) {
   return (
@@ -38,20 +36,6 @@ function CreateBlogsComponent({
         maxWidth="500px"
         onchange={(e) => {
           settitle(e);
-        }}
-        type="text"
-      ></TextFieldComponent>
-      <br />
-      <br />
-
-      {/* the blog title text field */}
-      <TextFieldComponent
-        value={author}
-        title="Author"
-        multiline="false"
-        maxWidth="500px"
-        onchange={(e) => {
-          setauthor(e);
         }}
         type="text"
       ></TextFieldComponent>

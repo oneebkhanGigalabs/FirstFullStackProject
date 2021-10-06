@@ -5,13 +5,13 @@ import { Backdrop, CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
 import { fetchBlog, updateBlog } from "../../redux/blogs/actions";
 import AlertDialogComponent from "../../component/AlertDialogComponent";
+import { getUser } from "../../redux/auth/actions/index";
 
 const id = getID();
 
 function UpdateBlogContainer({ ...props }) {
   const [title, settitle] = useState(props.blogs.blogs.title);
   const [description, setdescription] = useState(props.blogs.blogs.description);
-  const [author, setauthor] = useState(props.blogs.blogs.author);
   const [picture, setpicture] = useState(null);
   const [pictureName, setpictureName] = useState("image.png");
   const [base64Image, setbase64Image] = useState(props.blogs.blogs.image);
@@ -21,8 +21,10 @@ function UpdateBlogContainer({ ...props }) {
 
   useEffect(() => {
     props.fetchBlog(id);
+    props.getUser(localStorage["token"]);
   }, []);
 
+  console.log(props.data.data);
   function getBase64(file) {
     let document = "";
     let reader = new FileReader();
@@ -46,12 +48,13 @@ function UpdateBlogContainer({ ...props }) {
   }
 
   function onSubmitForm() {
-    if (base64Image && title && description && author) {
+    if (base64Image && title && description) {
       props
         .updateBlog({
           title: title,
           description: description,
-          author: author,
+          author: props.data.data.username,
+          token: localStorage["token"],
           image: base64Image,
           id: id,
         })
@@ -70,7 +73,6 @@ function UpdateBlogContainer({ ...props }) {
         base64Image={base64Image}
         pictureName={pictureName}
         picture={picture}
-        author={author}
         description={description}
         title={title}
         getBase64={(e) => {
@@ -93,9 +95,6 @@ function UpdateBlogContainer({ ...props }) {
         }}
         setbase64Image={(e) => {
           setbase64Image(e);
-        }}
-        setauthor={(e) => {
-          setauthor(e);
         }}
         onSubmitForm={() => {
           onSubmitForm();
@@ -129,6 +128,7 @@ function getID() {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
+    data: state.data,
   };
 };
 
@@ -151,6 +151,7 @@ const mapDispatchToProps = (dispatch) => {
           id: id,
         })
       ),
+    getUser: (token) => dispatch(getUser(token)),
   };
 };
 

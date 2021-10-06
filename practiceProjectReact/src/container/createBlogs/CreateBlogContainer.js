@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CreateBlogsComponent from "../../component/createBlog/CreateBlogsComponent";
 import { useHistory } from "react-router";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
 import { createBlog } from "../../redux/blogs/actions";
 import AlertDialogComponent from "../../component/AlertDialogComponent";
+import { getUser } from "../../redux/auth/actions/index";
 
 const style = {
   position: "absolute",
@@ -20,12 +21,15 @@ const style = {
 function CreateBlogContainer({ ...props }) {
   const [title, settitle] = useState("");
   const [description, setdescription] = useState("");
-  const [author, setauthor] = useState("");
   const [picture, setpicture] = useState(null);
   const [pictureName, setpictureName] = useState("Select an image");
   const [base64Image, setbase64Image] = useState(null);
   const [openModal, setopenModal] = useState(false);
   const history = useHistory();
+
+  useEffect(() => {
+    props.getUser(localStorage["token"]);
+  }, []);
 
   function getBase64(file) {
     let document = "";
@@ -50,13 +54,14 @@ function CreateBlogContainer({ ...props }) {
   }
 
   function onSubmitForm() {
-    if (base64Image && title && description && author) {
+    if (base64Image && title && description) {
       props
         .createBlog({
           title: title,
           description: description,
-          author: author,
+          author: props.data.data.username,
           image: base64Image,
+          token: props.data.data.token,
         })
         .then(() => {
           history.push("/");
@@ -73,7 +78,6 @@ function CreateBlogContainer({ ...props }) {
         base64Image={base64Image}
         pictureName={pictureName}
         picture={picture}
-        author={author}
         description={description}
         title={title}
         getBase64={(e) => {
@@ -96,9 +100,6 @@ function CreateBlogContainer({ ...props }) {
         }}
         setbase64Image={(e) => {
           setbase64Image(e);
-        }}
-        setauthor={(e) => {
-          setauthor(e);
         }}
         onSubmitForm={() => {
           onSubmitForm();
@@ -126,6 +127,7 @@ function CreateBlogContainer({ ...props }) {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
+    data: state.data,
   };
 };
 
@@ -136,6 +138,7 @@ const mapDispatchToProps = (dispatch) => {
       description: description,
       author: author,
       image: base64Image,
+      token: token,
     }) =>
       dispatch(
         createBlog({
@@ -143,8 +146,10 @@ const mapDispatchToProps = (dispatch) => {
           description: description,
           author: author,
           image: base64Image,
+          token: token,
         })
       ),
+    getUser: (token) => dispatch(getUser(token)),
   };
 };
 

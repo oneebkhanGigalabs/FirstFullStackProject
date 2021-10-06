@@ -45,6 +45,7 @@ export const createBlog = ({
   description: description,
   author: author,
   image: image,
+  token: token,
 }) => {
   return async (dispatch) => {
     dispatch(createBlogRequest());
@@ -54,6 +55,7 @@ export const createBlog = ({
         description: description,
         author: author,
         image: image,
+        token: token,
       });
       dispatch(fetchBlogsSuccess(res));
     } catch (error) {
@@ -66,17 +68,19 @@ export const updateBlog = ({
   title: title,
   description: description,
   author: author,
+  token: token,
   image: image,
   id: id,
 }) => {
   return async (dispatch) => {
     dispatch(updateBlogRequest());
     try {
-      const res = await axios.put(API_LINK + id, {
+      const res = await axios.put(API_LINK + id + "/" + token, {
         title: title,
         description: description,
         author: author,
         image: image,
+        token: token,
       });
       dispatch(fetchBlogsSuccess(res));
     } catch (error) {

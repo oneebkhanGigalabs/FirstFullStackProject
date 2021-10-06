@@ -11,6 +11,8 @@ function TopPictureBarContainer({ ...props }) {
       image={props.image}
       title={props.title}
       props={props.props}
+      user={props.user}
+      blogtoken={props.blogtoken}
       deleteFunction={() => {
         props.deleteBlog(props.blogs.blogs._id).then(() => {
           history.push("/");

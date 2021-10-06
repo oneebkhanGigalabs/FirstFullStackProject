@@ -4,10 +4,13 @@ import BlogsBottomContentContainer from "./BlogsBottomContentContainer";
 import { fetchBlog } from "../../redux/blogs/actions";
 import { connect } from "react-redux";
 import BlogDetailsLoading from "../../component/blogDetails/BlogDetailsLoading";
+import { getUser } from "../../redux/auth/actions";
+import { PanToolSharp } from "@material-ui/icons";
 
 function BlogDetailsContainer({ ...props }) {
   useEffect(() => {
     props.fetchBlog(getId());
+    props.getUser(localStorage["token"]);
   }, []);
   if (props.blogs.loading) {
     return <BlogDetailsLoading />;
@@ -19,6 +22,8 @@ function BlogDetailsContainer({ ...props }) {
           title={props.blogs.blogs.title}
           id={props.blogs.blogs._id}
           props={props.blogs.blogs}
+          user={props.data.data}
+          blogtoken={props.blogs.blogs.token}
         ></TopAppBarContainer>
         <br />
         <br />
@@ -39,12 +44,14 @@ const getId = () => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
+    data: state.data,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchBlog: () => dispatch(fetchBlog(getId())),
+    getUser: (token) => dispatch(getUser(token)),
   };
 };
 
