@@ -1,6 +1,6 @@
 import React from "react";
 import TopPictureBarComponent from "../../component/blogDetails/TopPictureBarComponent";
-import { deleteBlog } from "../../redux/actions";
+import { deleteBlog } from "../../redux/blogs/actions";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 

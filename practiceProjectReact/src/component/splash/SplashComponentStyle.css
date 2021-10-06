@@ -2,7 +2,7 @@
   width: 100vw;
   height: 100vh;
   background: white;
-  animation: mymove 2s forwards, 2s mymove2 5s forwards;
+  animation: mymove 1500ms forwards;
 }
 
 @keyframes mymove {
@@ -13,7 +13,7 @@
     background-color: #74b9ff;
   }
 }
-
+/* 
 @keyframes mymove2 {
   from {
     background-color: #74b9ff;
@@ -21,7 +21,7 @@
   to {
     background-color: white;
   }
-}
+} */
 
 .Text {
   color: white;

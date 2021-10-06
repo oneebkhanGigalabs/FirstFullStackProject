@@ -67,6 +67,7 @@ export class AuthService {
   }
 
   async signupLocal(dto: userDto) {
+    let tokenValue = {};
     const user = await this.model
       .findOne()
       .where('email')
@@ -80,6 +81,7 @@ export class AuthService {
         if (user) {
           return new ConflictException('User already registered');
         }
+
         const salt = await bcrypt.genSalt(10);
         const hash = await bcrypt.hash(dto.password, salt);
         const token = await this.jwtService.signAsync({
@@ -87,10 +89,9 @@ export class AuthService {
           username: dto.username,
           type: 'user',
         });
-        console.log(hash);
-        console.log(token);
+        tokenValue = token;
         if (dto.image) {
-          return await new this.model({
+          await new this.model({
             username: dto.username,
             email: dto.email,
             hashPassword: hash,
@@ -98,7 +99,7 @@ export class AuthService {
             image: dto.image,
           }).save();
         } else {
-          return await new this.model({
+          await new this.model({
             username: dto.username,
             email: dto.email,
             hashPassword: hash,
@@ -106,9 +107,25 @@ export class AuthService {
           }).save();
         }
       });
+    return tokenValue;
   }
 
-  async getUser() {}
+  async getUser(token: string) {
+    return await this.model
+      .findOne()
+      .where('token')
+      .equals(token)
+      .exec()
+      .catch((err) => {
+        return err;
+      })
+      .then((user) => {
+        if (!user) {
+          throw new NotFoundException('User with this token not found');
+        }
+        return user;
+      });
+  }
 
   async validate(email: string) {
     const user = await this.model

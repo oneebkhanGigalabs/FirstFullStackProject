@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { signInDto, userDto } from './dto/auth.dto';
 
@@ -14,5 +14,10 @@ export class AuthController {
   @Post('signup')
   async signupLocal(@Body() userDto: userDto) {
     return await this.authService.signupLocal(userDto);
+  }
+
+  @Get('getUser/:token')
+  async getUser(@Param('token') token: string) {
+    return await this.authService.getUser(token);
   }
 }

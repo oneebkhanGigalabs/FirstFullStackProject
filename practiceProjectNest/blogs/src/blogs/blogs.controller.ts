@@ -34,9 +34,13 @@ export class BlogsController {
   }
 
   //update the blog with the id
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() updateBlogsDto: blogsDto) {
-    return await this.service.updateBlog(id, updateBlogsDto);
+  @Put(':id/:token')
+  async update(
+    @Param('id') id: string,
+    @Body() updateBlogsDto: blogsDto,
+    @Param('token') token: string,
+  ) {
+    return await this.service.updateBlog(id, updateBlogsDto, token);
   }
 
   //delete the blog with the id

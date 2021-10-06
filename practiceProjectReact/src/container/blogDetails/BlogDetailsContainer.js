@@ -1,29 +1,33 @@
 import React, { useEffect } from "react";
 import TopAppBarContainer from "./TopPictureBarContainer";
 import BlogsBottomContentContainer from "./BlogsBottomContentContainer";
-import { fetchBlog } from "../../redux/actions";
+import { fetchBlog } from "../../redux/blogs/actions";
 import { connect } from "react-redux";
+import BlogDetailsLoading from "../../component/blogDetails/BlogDetailsLoading";
 
 function BlogDetailsContainer({ ...props }) {
   useEffect(() => {
     props.fetchBlog(getId());
   }, []);
-
-  return (
-    <div>
-      <TopAppBarContainer
-        image={props.blogs.blogs.image}
-        title={props.blogs.blogs.title}
-        id={props.blogs.blogs._id}
-        props={props.blogs.blogs}
-      ></TopAppBarContainer>
-      <br />
-      <br />
-      <BlogsBottomContentContainer
-        props={props.blogs.blogs}
-      ></BlogsBottomContentContainer>
-    </div>
-  );
+  if (props.blogs.loading) {
+    return <BlogDetailsLoading />;
+  } else {
+    return (
+      <div>
+        <TopAppBarContainer
+          image={props.blogs.blogs.image}
+          title={props.blogs.blogs.title}
+          id={props.blogs.blogs._id}
+          props={props.blogs.blogs}
+        ></TopAppBarContainer>
+        <br />
+        <br />
+        <BlogsBottomContentContainer
+          props={props.blogs.blogs}
+        ></BlogsBottomContentContainer>
+      </div>
+    );
+  }
 }
 
 const getId = () => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import DashboardContentComponent from "../../component/dashboard/DashboardContentComponent";
-import { fetchAllBlogs } from "../../redux/actions";
+import { fetchAllBlogs } from "../../redux/blogs/actions";
 import { connect } from "react-redux";
 import SkeletonLoadingBottomContent from "../../component/dashboard/SkeletonLoadingBottomContent";
 import "./bottomContent.css";

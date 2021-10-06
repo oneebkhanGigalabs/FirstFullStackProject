@@ -39,7 +39,7 @@ export class BlogsService {
     return await new this.model({ ...blogsDto }).save();
   }
 
-  async updateBlog(id: string, updateBlogsDto: blogsDto) {
+  async updateBlog(id: string, updateBlogsDto: blogsDto, token: string) {
     await this.model
       .findById(id)
       .exec()
@@ -52,7 +52,7 @@ export class BlogsService {
             "Blog with id '" + id + "' does not exist",
           );
         }
-        if (blog.token != updateBlogsDto.token) {
+        if (blog.token != token) {
           throw new UnauthorizedException(
             "You can't edit this blog because you did not create it",
           );
@@ -100,20 +100,24 @@ export class BlogsService {
       .findById(id)
       .exec()
       .catch((err) => {
-        throw new NotFoundException('Blog with id:' + id + ' not found');
+        throw new NotFoundException(err);
       })
       .then(async (blog) => {
+        if (!blog) {
+          throw new NotFoundException('Blog not found');
+        }
         await this.authModel
           .findOne()
           .where('email')
           .equals(email['email'])
           .exec()
           .catch((err) => {
-            throw new NotFoundException(
-              'User with email: ' + email['email'] + ' not found',
-            );
+            throw new NotFoundException(err);
           })
           .then(async (user: Auth) => {
+            if (!user) {
+              throw new NotFoundException('User not found');
+            }
             var u = user;
             if (u.favoriteBlogs.includes(id)) {
               u.favoriteBlogs.splice(u.favoriteBlogs.indexOf(id), 1);

@@ -16,8 +16,8 @@ function SplashContainer() {
     }, 3500);
 
     setTimeout(() => {
-      history.push("/");
-    }, 7000);
+      history.push("/login");
+    }, 5000);
   }, []);
 
   return <SplashComponent checked={checked} />;

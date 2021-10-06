@@ -3,7 +3,7 @@ import CreateBlogsComponent from "../../component/createBlog/CreateBlogsComponen
 import { useHistory } from "react-router";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
-import { createBlog } from "../../redux/actions";
+import { createBlog } from "../../redux/blogs/actions";
 import AlertDialogComponent from "../../component/AlertDialogComponent";
 
 const style = {

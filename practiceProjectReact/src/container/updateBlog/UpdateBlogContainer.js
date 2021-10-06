@@ -3,7 +3,7 @@ import UpdateBlogComponent from "../../component/updateBlogComponent/UpdateBlogC
 import { useHistory } from "react-router";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
-import { fetchBlog, updateBlog } from "../../redux/actions";
+import { fetchBlog, updateBlog } from "../../redux/blogs/actions";
 import AlertDialogComponent from "../../component/AlertDialogComponent";
 
 const id = getID();
