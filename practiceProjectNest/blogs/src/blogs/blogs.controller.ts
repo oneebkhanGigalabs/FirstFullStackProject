@@ -33,31 +33,12 @@ export class BlogsController {
     return await this.service.createBlogs(createBlogsDto);
   }
 
-  //update the blog with the id
-  @Put(':id/:token')
-  async update(
-    @Param('id') id: string,
-    @Body() updateBlogsDto: blogsDto,
-    @Param('token') token: string,
-  ) {
-    return await this.service.updateBlog(id, updateBlogsDto, token);
-  }
-
-  //delete the blog with the id
-  @Delete(':id/:token')
-  async delete(@Param('id') id: string, @Param('token') token: string) {
-    return await this.service.deleteBlog(id, token);
-  }
-
-  // ********** part 2 ********** //
-
   //favorite the blog with the id
   @Put(':id/favorite')
   async favoriteBlog(@Param('id') id: string, @Body() email: string) {
+    console.log('start');
     return await this.service.favoriteBlog(id, email);
   }
-
-  // ************ comments section ************ //
 
   //get all comments
   @Get(':id/comments')
@@ -75,33 +56,57 @@ export class BlogsController {
   }
 
   //reply to a comment
-  @Post(':id/comments/:blogId')
+  @Post(':blogId/comments/:commentId')
   async replyToComment(
-    @Param('id') id: string,
+    @Param('commentId') commentId: string,
     @Param('blogId') blogId: string,
     @Body() commentsDto: commentsDto,
   ) {
-    return await this.service.replyToComment(id, commentsDto, blogId);
+    return await this.service.replyToComment(blogId, commentsDto, commentId);
   }
 
   //update a comment
-  @Put(':id/comments/:blogId/:token')
+  @Put(':blogId/comments/:commentId/:token')
   async updateComment(
-    @Param('id') id: string,
+    @Param('commentId') commentId: string,
     @Param('blogId') blogId: string,
     @Body() commentsDto: commentsDto,
     @Param('token') token: string,
   ) {
-    return await this.service.updateComment(id, commentsDto, blogId, token);
+    return await this.service.updateComment(
+      blogId,
+      commentId,
+      commentsDto,
+      token,
+    );
   }
 
   //delete a comment
-  @Delete(':id/comments/:blogId/:token')
+  @Delete(':blogId/comments/:commentId/:token')
   async deleteComment(
-    @Param('id') id: string,
+    @Param('commentId') commentId: string,
     @Param('blogId') blogId: string,
     @Param('token') token: string,
   ) {
-    return await this.service.deleteComment(id, blogId, token);
+    return await this.service.deleteComment(blogId, commentId, token);
+  }
+
+  //update the blog with the id
+  @Put(':id/:token')
+  async update(
+    @Param('id') id: string,
+    @Body() updateBlogsDto: blogsDto,
+    @Param('token') token: string,
+  ) {
+    return await this.service.updateBlog(id, updateBlogsDto, token);
+  }
+
+  //delete the blog with the id
+  @Delete(':id/:token')
+  async delete(@Param('id') id: string, @Param('token') token: string) {
+    return await this.service.deleteBlog(id, token);
   }
 }
+// ********** part 2 ********** //
+
+// ************ comments section ************ //

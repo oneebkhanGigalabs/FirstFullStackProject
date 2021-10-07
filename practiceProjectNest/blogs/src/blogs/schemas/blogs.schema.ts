@@ -48,7 +48,7 @@ export const BlogsSchema = new mongoose.Schema(
       required: true,
       default: defaultImage,
     },
-    comment: [CommentSchema],
+    comments: [CommentSchema],
   },
   { timestamps: true },
 );

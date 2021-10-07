@@ -1,6 +1,6 @@
 import React from "react";
 import TopPictureBarComponent from "../../component/blogDetails/TopPictureBarComponent";
-import { deleteBlog } from "../../redux/blogs/actions";
+import { deleteBlog, favoriteBlog } from "../../redux/blogs/actions";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 
@@ -13,6 +13,9 @@ function TopPictureBarContainer({ ...props }) {
       props={props.props}
       user={props.user}
       blogtoken={props.blogtoken}
+      favoriteBlog={(email, id) => {
+        props.favoriteBlog(email, id);
+      }}
       deleteFunction={() => {
         props.deleteBlog(props.blogs.blogs._id).then(() => {
           history.push("/");
@@ -31,6 +34,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteBlog: (id) => dispatch(deleteBlog(id)),
+    favoriteBlog: ({ email: email, id: id }) =>
+      dispatch(favoriteBlog({ email: email, id: id })),
   };
 };
 

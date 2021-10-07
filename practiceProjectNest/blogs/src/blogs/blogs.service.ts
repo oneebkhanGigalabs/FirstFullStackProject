@@ -96,6 +96,7 @@ export class BlogsService {
   // ***** favorite a blog (different for every user) **** //
 
   async favoriteBlog(id: string, email: string) {
+    let msg = '';
     await this.model
       .findById(id)
       .exec()
@@ -106,6 +107,7 @@ export class BlogsService {
         if (!blog) {
           throw new NotFoundException('Blog not found');
         }
+
         await this.authModel
           .findOne()
           .where('email')
@@ -114,22 +116,27 @@ export class BlogsService {
           .catch((err) => {
             throw new NotFoundException(err);
           })
-          .then(async (user: Auth) => {
+          .then(async (user) => {
             if (!user) {
               throw new NotFoundException('User not found');
             }
+
             var u = user;
             if (u.favoriteBlogs.includes(id)) {
+              msg = 'Blog removed from favorites';
               u.favoriteBlogs.splice(u.favoriteBlogs.indexOf(id), 1);
             } else {
+              msg = 'Blog added to favorites';
               u.favoriteBlogs.push(id);
             }
+
             await this.authModel.findOneAndUpdate(
               { email: email['email'] },
               { $set: { favoriteBlogs: u.favoriteBlogs } },
             );
           });
       });
+    return msg;
   }
 
   // ****** Comment section *******//
@@ -144,8 +151,8 @@ export class BlogsService {
       })
       .then((blog) => {
         if (blog) {
-          c = { ...blog.comment };
-          return { out: blog.comment };
+          c = { ...blog.comments };
+          return { out: blog.comments };
         } else {
           throw new NotFoundException('Blog not found');
         }
@@ -157,7 +164,7 @@ export class BlogsService {
     await this.model
       .findByIdAndUpdate(id, {
         $push: {
-          comment: {
+          comments: {
             ...commentsDto,
             level: 0,
           },
@@ -170,35 +177,39 @@ export class BlogsService {
     return 'Base comment created successfully';
   }
 
-  async replyToComment(id: string, commentsDto: commentsDto, blogID: string) {
+  async replyToComment(
+    blogId: string,
+    commentsDto: commentsDto,
+    commentId: string,
+  ) {
     await this.model
-      .findById(id)
+      .findById(blogId)
       .exec()
       .catch((err) => {
         return err;
       })
       .then((blog) => {
-        traverseCommentsReply(blog.comment, blogID, commentsDto).then(
+        traverseCommentsReply(blog.comments, commentId, commentsDto).then(
           async (res) => {
             //console.log(res);
-            await this.model.findByIdAndUpdate(id, { comment: res });
+            await this.model.findByIdAndUpdate(blogId, { comments: res });
           },
         );
       });
   }
 
-  async deleteComment(id: string, blogID: string, token: string) {
+  async deleteComment(blogId: string, commentId: string, token: string) {
     await this.model
-      .findById(id)
+      .findById(blogId)
       .exec()
       .catch((err) => {
         return err;
       })
       .then((blog) => {
-        traverseAndDeleteElement(blog.comment, blogID, token).then(
+        traverseAndDeleteElement(blog.comments, commentId, token).then(
           async (res) => {
             if (res) {
-              await this.model.findByIdAndUpdate(id, { comment: res });
+              await this.model.findByIdAndUpdate(blogId, { comments: res });
             }
           },
         );
@@ -206,26 +217,29 @@ export class BlogsService {
   }
 
   async updateComment(
-    id: string,
+    blogId: string,
+    commentId: string,
     commentsDto: commentsDto,
-    blogID: string,
     token: string,
   ) {
     await this.model
-      .findById(id)
+      .findById(blogId)
       .exec()
       .catch((err) => {
         return err;
       })
       .then((blog) => {
-        traverseAndUpdateElement(blog.comment, blogID, commentsDto, token).then(
-          async (res) => {
-            //console.log(res);
-            if (res) {
-              await this.model.findByIdAndUpdate(id, { comment: res });
-            }
-          },
-        );
+        traverseAndUpdateElement(
+          blog.comments,
+          commentId,
+          commentsDto,
+          token,
+        ).then(async (res) => {
+          //console.log(res);
+          if (res) {
+            await this.model.findByIdAndUpdate(blogId, { comments: res });
+          }
+        });
       });
   }
 }
@@ -310,7 +324,7 @@ async function traverseAndUpdateElement(
         break;
       }
       c = 'found';
-      objList[index].comment = commentsDto.comment;
+      objList[index].comments = commentsDto.comment;
       break;
     }
     if (objList[index].comments.length > 0) {

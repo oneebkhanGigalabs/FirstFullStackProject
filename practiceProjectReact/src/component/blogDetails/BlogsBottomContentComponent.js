@@ -13,7 +13,7 @@ function BlogsBottomContentComponent({ ...props }) {
           color: "#707070",
           display: "flex",
           marginTop: "50px",
-          marginBottom: "60px",
+          marginBottom: "55px",
         }}
       >
         By:{" "}

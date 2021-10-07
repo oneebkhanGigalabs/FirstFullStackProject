@@ -5,14 +5,21 @@ import { fetchBlog } from "../../redux/blogs/actions";
 import { connect } from "react-redux";
 import BlogDetailsLoading from "../../component/blogDetails/BlogDetailsLoading";
 import { getUser } from "../../redux/auth/actions";
-import { PanToolSharp } from "@material-ui/icons";
+import CommentSectionContainer from "./CommentSectionContainer";
 
 function BlogDetailsContainer({ ...props }) {
   useEffect(() => {
     props.fetchBlog(getId());
     props.getUser(localStorage["token"]);
-  }, []);
-  if (props.blogs.loading) {
+    console.log("useeffect called");
+  }, [props.blogs.blogs.updatedAt]);
+  //console.log(props);
+
+  if (
+    props.blogs.loading ||
+    props.data.loading ||
+    typeof props.blogs.blogs !== "object"
+  ) {
     return <BlogDetailsLoading />;
   } else {
     return (
@@ -30,6 +37,13 @@ function BlogDetailsContainer({ ...props }) {
         <BlogsBottomContentContainer
           props={props.blogs.blogs}
         ></BlogsBottomContentContainer>
+        <CommentSectionContainer
+          fetchBlog={(id) => {
+            props.fetchBlog(id);
+          }}
+          comments={props.blogs.blogs.comments}
+          blogId={props.blogs.blogs._id}
+        ></CommentSectionContainer>
       </div>
     );
   }

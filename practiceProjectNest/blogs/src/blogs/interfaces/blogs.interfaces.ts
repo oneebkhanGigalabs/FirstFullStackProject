@@ -6,5 +6,5 @@ export interface Blogs extends Document {
   author: string;
   image: string;
   token: string;
-  comment: [Comments];
+  comments: [Comments];
 }

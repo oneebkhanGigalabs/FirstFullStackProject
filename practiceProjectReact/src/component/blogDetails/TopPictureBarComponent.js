@@ -25,10 +25,12 @@ function TopPictureBarComponent({ ...props }) {
   const trigger = useScrollTrigger({ threshold: 100 });
 
   useEffect(() => {
-    if (props.user.favoriteBlogs.includes(props.props._id)) {
-      setfavorite(true);
-    } else {
-      setfavorite(false);
+    if (props.user.favoriteBlogs) {
+      if (props.user.favoriteBlogs.includes(props.props._id)) {
+        setfavorite(true);
+      } else {
+        setfavorite(false);
+      }
     }
   }, []);
 
@@ -146,6 +148,12 @@ function TopPictureBarComponent({ ...props }) {
             sx={{ mr: 2 }}
             onClick={() => {
               setfavorite(!favorite);
+              setTimeout(() => {
+                props.favoriteBlog({
+                  email: props.user.email,
+                  id: props.props._id,
+                });
+              }, 200);
             }}
           >
             <Avatar
@@ -183,12 +191,15 @@ function TopPictureBarComponent({ ...props }) {
             <Box
               onClick={handleClick}
               role="presentation"
-              sx={{ position: "fixed", bottom: 16, right: 16 }}
+              sx={{ position: "fixed", bottom: 16, right: 16, zIndex: "100" }}
             >
               <Fab
                 size="large"
                 aria-label="scroll back to top"
-                style={{ backgroundColor: "#74b9ff", color: "white" }}
+                style={{
+                  backgroundColor: "#74b9ff",
+                  color: "white",
+                }}
               >
                 <KeyboardArrowUpRounded />
               </Fab>
