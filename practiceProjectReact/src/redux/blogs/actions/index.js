@@ -201,6 +201,7 @@ export const createComment = ({
         comment: comment,
         token: token,
       });
+      fetchBlog(blogId);
       dispatch(commentSuccess(res));
     } catch (error) {
       commentFailure(error.message);
@@ -213,11 +214,10 @@ export const createReply = ({
   comment: comment,
   token: token,
   blogId: blogId,
-  commentId,
-  commentId,
+  commentId: commentId,
 }) => {
   return async (dispatch) => {
-    dispatch(replyRequest);
+    dispatch(replyRequest());
     try {
       const res = await axios.post(
         API_LINK + blogId + "/comments/" + commentId,
@@ -227,8 +227,61 @@ export const createReply = ({
           token: token,
         }
       );
+      fetchBlog(blogId);
       dispatch(commentSuccess(res));
     } catch (error) {
+      commentFailure(error.message);
+    }
+  };
+};
+
+//:blogId/comments/:commentId/:token
+export const updateComment = ({
+  author: author,
+  comment: comment,
+  token: token,
+  blogId: blogId,
+  commentId: commentId,
+}) => {
+  return async (dispatch) => {
+    dispatch(updateCommentRequest());
+
+    try {
+      const res = await axios.put(
+        API_LINK + blogId + "/comments/" + commentId + "/" + token,
+        {
+          author: author,
+          comment: comment,
+          token: token,
+        }
+      );
+
+      fetchBlog(blogId);
+      dispatch(commentSuccess(res));
+    } catch (error) {
+      console.log(error.message);
+      commentFailure(error.message);
+    }
+  };
+};
+
+//:blogId/comments/:commentId/:token
+export const deleteComment = ({
+  token: token,
+  blogId: blogId,
+  commentId: commentId,
+}) => {
+  return async (dispatch) => {
+    dispatch(deleteCommentRequest());
+    try {
+      const res = await axios.delete(
+        API_LINK + blogId + "/comments/" + commentId + "/" + token
+      );
+
+      fetchBlog(blogId);
+      dispatch(commentSuccess(res));
+    } catch (error) {
+      console.log(error.message);
       commentFailure(error.message);
     }
   };

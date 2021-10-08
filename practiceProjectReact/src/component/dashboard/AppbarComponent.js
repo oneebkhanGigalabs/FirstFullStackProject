@@ -54,7 +54,8 @@ function AppbarComponent({ ...props }) {
                 height: "56px",
               }}
               onClick={() => {
-                moveToCreatePage();
+                localStorage.removeItem("token");
+                history.push("/splash");
               }}
             >
               <Avatar

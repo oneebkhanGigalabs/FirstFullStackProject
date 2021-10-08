@@ -55,16 +55,6 @@ export class BlogsController {
     return await this.service.createComment(id, commentsDto);
   }
 
-  //reply to a comment
-  @Post(':blogId/comments/:commentId')
-  async replyToComment(
-    @Param('commentId') commentId: string,
-    @Param('blogId') blogId: string,
-    @Body() commentsDto: commentsDto,
-  ) {
-    return await this.service.replyToComment(blogId, commentsDto, commentId);
-  }
-
   //update a comment
   @Put(':blogId/comments/:commentId/:token')
   async updateComment(
@@ -89,6 +79,16 @@ export class BlogsController {
     @Param('token') token: string,
   ) {
     return await this.service.deleteComment(blogId, commentId, token);
+  }
+
+  //reply to a comment
+  @Post(':blogId/comments/:commentId')
+  async replyToComment(
+    @Param('commentId') commentId: string,
+    @Param('blogId') blogId: string,
+    @Body() commentsDto: commentsDto,
+  ) {
+    return await this.service.replyToComment(blogId, commentsDto, commentId);
   }
 
   //update the blog with the id

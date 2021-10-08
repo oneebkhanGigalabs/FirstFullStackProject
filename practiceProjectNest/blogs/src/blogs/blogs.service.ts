@@ -182,6 +182,9 @@ export class BlogsService {
     commentsDto: commentsDto,
     commentId: string,
   ) {
+    // console.log(blogId);
+    // console.log(commentsDto);
+    // console.log(commentId);
     await this.model
       .findById(blogId)
       .exec()
@@ -281,14 +284,11 @@ async function traverseAndDeleteElement(
   id: string,
   token: string,
 ) {
-  let c = '';
   for (var index = 0; index < objList.length; index++) {
     if (objList[index]._id.toString() === id) {
       if (objList[index].token != token) {
-        c = 'token';
         break;
       }
-      c = 'found';
       objList.splice(index, 1);
       break;
     }
@@ -296,14 +296,7 @@ async function traverseAndDeleteElement(
       traverseAndDeleteElement(objList[index].comments, id, token);
     }
   }
-  switch (c) {
-    case 'token':
-      throw new ForbiddenException('Token does not match');
-    case 'found':
-      return objList;
-    default:
-      throw new NotFoundException('No blog with id found');
-  }
+  return objList;
 }
 
 // 3. will traverse through the array and update
@@ -316,27 +309,17 @@ async function traverseAndUpdateElement(
   commentsDto: any,
   token: string,
 ) {
-  let c = '';
   for (var index = 0; index < objList.length; index++) {
     if (objList[index]._id.toString() === id) {
       if (objList[index].token != token) {
-        c = 'token';
         break;
       }
-      c = 'found';
-      objList[index].comments = commentsDto.comment;
+      objList[index].comment = commentsDto.comment;
       break;
     }
     if (objList[index].comments.length > 0) {
       traverseAndUpdateElement(objList[index].comments, id, commentsDto, token);
     }
   }
-  switch (c) {
-    case 'token':
-      throw new ForbiddenException('Token does not match');
-    case 'found':
-      return objList;
-    default:
-      throw new NotFoundException('No blog with id found');
-  }
+  return objList;
 }

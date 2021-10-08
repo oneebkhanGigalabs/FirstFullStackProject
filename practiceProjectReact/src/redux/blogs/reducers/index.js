@@ -18,6 +18,7 @@ import {
 
 let defaultState = {
   loading: false,
+  rerenderBlogs: false,
   blogs: [],
   error: "",
   msg: "",
@@ -29,35 +30,40 @@ const mainReducer = (state = defaultState, action) => {
       return {
         ...state,
         loading: true,
+        rerenderBlogs: false,
       };
     case FETCH_BLOGS_SUCCESS:
       return {
         ...state,
         loading: false,
         blogs: action.payload,
+        rerenderBlogs: false,
         error: "",
       };
     case FETCH_BLOGS_FAILURE:
       return {
         ...state,
-        loading: false,
+        rerenderBlogs: false,
         blogs: [],
         error: action.payload,
       };
     case CREATE_BLOG:
       return {
         ...state,
+        rerenderBlogs: false,
         loading: true,
       };
     case UPDATE_BLOG:
       return {
         ...state,
         loading: true,
+        rerenderBlogs: false,
       };
     case DELETE_BLOG:
       return {
         ...state,
         loading: true,
+        rerenderBlogs: false,
       };
 
     // FAVORITE_BLOGS_REQUEST,
@@ -67,17 +73,20 @@ const mainReducer = (state = defaultState, action) => {
       return {
         ...state,
         loading: false,
+        rerenderBlogs: false,
       };
     case FAVORITE_BLOGS_SUCCESS:
       return {
         ...state,
         loading: false,
+        rerenderBlogs: false,
       };
     case FAVORITE_BLOGS_FAILURE:
       return {
         ...state,
         error: action.payload,
         loading: false,
+        rerenderBlogs: false,
       };
 
     // COMMENT_REQUEST,
@@ -90,32 +99,38 @@ const mainReducer = (state = defaultState, action) => {
       return {
         ...state,
         loading: true,
+        rerenderBlogs: true,
       };
     case REPLY_REQUEST:
       return {
         ...state,
         loading: true,
+        rerenderBlogs: true,
       };
     case UPDATE_COMMENT_REQUEST:
       return {
         ...state,
         loading: true,
+        rerenderBlogs: true,
       };
     case DELETE_COMMENT_REQUEST:
       return {
         ...state,
         loading: true,
+        rerenderBlogs: true,
       };
     case COMMENT_SUCCESS:
       return {
         ...state,
         loading: false,
+        rerenderBlogs: true,
       };
     case COMMENT_FAILURE:
       return {
         ...state,
         error: action.payload,
         loading: false,
+        rerenderBlogs: false,
       };
 
     default:

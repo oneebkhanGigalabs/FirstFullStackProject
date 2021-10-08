@@ -11,8 +11,8 @@ function BlogDetailsContainer({ ...props }) {
   useEffect(() => {
     props.fetchBlog(getId());
     props.getUser(localStorage["token"]);
-    console.log("useeffect called");
-  }, [props.blogs.blogs.updatedAt]);
+    //console.log("useeffect called");
+  }, [props.blogs.blogs.createdAt, props.blogs.rerenderBlog]);
   //console.log(props);
 
   if (
@@ -43,6 +43,7 @@ function BlogDetailsContainer({ ...props }) {
           }}
           comments={props.blogs.blogs.comments}
           blogId={props.blogs.blogs._id}
+          blog={props.blogs.blogs}
         ></CommentSectionContainer>
       </div>
     );
